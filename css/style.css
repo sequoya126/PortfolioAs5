@@ -5,13 +5,221 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #fdf8f0; /* Cream base — Act I warmth */
-    color: #3a2c1b;
-    transition: background 0.8s ease;
+html {
+    scroll-behavior: smooth; /* Smooth anchor scrolling */
 }
 
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fdf8f0;
+    color: #3a2c1b;
+}
+
+/* ----- FIXED NAVBAR (Gestalt: Figure-Ground) ----- */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(253, 248, 240, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(58, 44, 27, 0.08);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.nav-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #5b3e1a;
+    letter-spacing: -0.3px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4a3e2e;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #5b3e1a;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #5b3e1a;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* ----- HERO SECTION (Full Viewport) ----- */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px 40px;
+    /* Subtle gradient to mimic vanilla/earth tones */
+    background: linear-gradient(160deg, #fdf8f0 0%, #f0e3d0 60%, #e8d5bc 100%);
+    position: relative;
+    border-bottom: 2px dashed #d4c3a8;
+}
+
+/* Optional: Decorative "vanilla bean" texture via pseudo-element */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M50 10 L55 35 L80 35 L62 50 L70 75 L50 60 L30 75 L38 50 L20 35 L45 35 Z"/></svg>');
+    background-size: 120px 120px;
+    pointer-events: none;
+}
+
+.hero-content {
+    max-width: 850px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 4.2rem;
+    font-weight: 700;
+    color: #3a2510;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -1.5px;
+}
+
+.hero-content h1 br {
+    display: block;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    color: #4d3a26;
+    max-width: 650px;
+    margin: 0 auto 28px;
+    font-weight: 400;
+}
+
+.hero-meta {
+    font-size: 0.9rem;
+    color: #7a6248;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 50px;
+    letter-spacing: 0.3px;
+}
+
+/* Scroll Indicator (Gestalt: Continuity) */
+.scroll-indicator {
+    margin-top: 10px;
+}
+
+.arrow-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #5b3e1a;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease;
+}
+
+.arrow-link:hover {
+    transform: translateY(4px);
+}
+
+.arrow-line {
+    font-size: 2.2rem;
+    line-height: 1;
+    display: block;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+/* ----- INTRO / PURPOSE SECTION ----- */
+.intro-section {
+    padding: 80px 20px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    border-bottom: 2px dashed #e0d3c0;
+}
+
+.intro-container h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.2rem;
+    color: #5b3e1a;
+    margin-bottom: 20px;
+}
+
+.intro-container p {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #4a3e2e;
+    margin-bottom: 18px;
+}
+
+.intro-container strong {
+    color: #9a5c3a;
+    font-weight: 600;
+}
+
+.intro-divider {
+    margin-top: 40px;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    color: #a0826a;
+    font-weight: 300;
+}
+
+/* ----- SCROLL CONTAINER (for Vue charts) ----- */
 .scroll-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -82,8 +290,25 @@ body {
     border-radius: 4px;
 }
 
+/* ----- FOOTER ----- */
+.site-footer {
+    text-align: center;
+    padding: 40px 20px;
+    background: #e8dcc8;
+    color: #5d4a34;
+    font-size: 0.85rem;
+    border-top: 1px solid #d4c3a8;
+    line-height: 1.8;
+}
+
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.6rem;
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+    }
     .story-text h2 {
         font-size: 2rem;
     }
@@ -94,24 +319,10 @@ body {
         height: 300px;
         padding: 12px;
     }
-}
-
-
-nav {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #ffffffcc;
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-nav a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #3a2c1b;
-    font-weight: 600;
-    transition: color 0.3s ease;
+    .navbar {
+        padding: 0 20px;
+    }
+    .nav-links {
+        gap: 16px;
+    }
 }
