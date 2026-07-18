@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- This is an assignment for SEG3125 - Assignment 5. -->
     <title>The Last Bite – Vanilla Scrollytelling</title>
-    
+
     <!-- External Styles -->
     <link rel="stylesheet" href="css/style.css" />
-    
+
     <!-- External Libraries (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet.heat plugin -->
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
 </head>
+
 <body>
 
     <!-- ==================== FIXED NAVBAR ==================== -->
     <nav class="navbar">
         <div class="nav-container">
-            <span class="logo"> <img src="images/vanilla-icon.png" alt="Vanilla Orchid" class="hero-icon" /> The Last Bite</span>
+            <span class="logo"> <img src="images/vanilla-icon.png" alt="Vanilla Orchid" class="hero-icon" /> The Last
+                Bite</span>
             <ul class="nav-links">
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#intro">About</a></li>
@@ -32,10 +42,10 @@
     <!-- ==================== HERO SECTION (Full Screen) ==================== -->
     <section id="hero" class="hero-section">
         <div class="hero-content">
-            
+
             <h1>What Climate Change <br>Can Take From Us</h1>
             <p class="hero-subtitle">
-                The 500-year journey of vanilla—from sacred orchid to global obsession, 
+                The 500-year journey of vanilla—from sacred orchid to global obsession,
                 and the climate crisis threatening its last breath.
             </p>
             <div class="hero-meta">
@@ -58,16 +68,16 @@
         <div class="intro-container">
             <h2>Why this story matters</h2>
             <p>
-                Vanilla is the world's second-most expensive spice. But behind its sweet aroma 
-                lies a fragile supply chain, reliant on <strong>one specific bee</strong>, 
-                <strong>one 12-year-old's hand-pollination method</strong>, and 
+                Vanilla is the world's second-most expensive spice. But behind its sweet aroma
+                lies a fragile supply chain, reliant on <strong>one specific bee</strong>,
+                <strong>one 12-year-old's hand-pollination method</strong>, and
                 <strong>one climate-vulnerable island</strong>—Madagascar.
             </p>
             <p>
-                This interactive documentary uses climate data, trade routes, and price 
-                forecasts to trace how rising temperatures are rewriting the fate of an 
-                entire agricultural heritage. <strong>What happens when a crop's 
-                "perfect recipe" no longer exists anywhere on Earth?</strong>
+                This interactive documentary uses climate data, trade routes, and price
+                forecasts to trace how rising temperatures are rewriting the fate of an
+                entire agricultural heritage. <strong>What happens when a crop's
+                    "perfect recipe" no longer exists anywhere on Earth?</strong>
             </p>
             <div class="intro-divider">— ↓ Scroll to explore ↓ —</div>
         </div>
@@ -76,32 +86,24 @@
     <!-- ==================== VUE SCROLLYTELLING APP ==================== -->
     <div id="app">
         <div class="scroll-container">
-            
+
             <!-- Loop over all acts using Vue's v-for -->
-            <section 
-                v-for="(act, index) in acts" 
-                :key="index"
-                :id="'act-' + index" 
-                class="act"
-            >
+            <section v-for="(act, index) in acts" :key="index" :id="'act-' + index" class="act">
                 <!-- Narrative Text -->
                 <div class="story-text">
                     <h2 v-html="act.title"></h2>
                     <p v-html="act.text"></p>
                 </div>
-                
+
                 <!-- Chart Wrapper -->
-                <div 
-                    class="chart-wrapper" 
-                    :id="'chart-wrapper-' + index"
-                >
+                <div class="chart-wrapper" :id="'chart-wrapper-' + index">
                     <canvas :id="'chart-' + index"></canvas>
                 </div>
             </section>
-            
+
         </div>
     </div>
-    
+
     <!-- ==================== FOOTER ==================== -->
     <footer class="site-footer">
         <p>Data sourced from FAOSTAT, World Bank, and CHELSA Climate Projections.</p>
@@ -123,8 +125,10 @@
                 <li><strong>World Bank / UN Comtrade</strong> — Import/export trade flows and commodity values.</li>
                 <li><strong>CHELSA Bioclimate Projections</strong> — Future climate suitability scenarios (2050).</li>
                 <li><strong>IndexBox / Tridge</strong> — Historical vanilla price indices and market volatility.</li>
-                <li><strong>Duke University (PLOS Climate)</strong> — Farmer surveys on climate impacts in Madagascar.</li>
-                <li><strong>Historical Archives</strong> — Colonial records and agricultural timelines (1520–present).</li>
+                <li><strong>Duke University (PLOS Climate)</strong> — Farmer surveys on climate impacts in Madagascar.
+                </li>
+                <li><strong>Historical Archives</strong> — Colonial records and agricultural timelines (1520–present).
+                </li>
             </ul>
             <p style="margin-top: 16px; font-size: 0.9rem; color: #7a6248;">
                 <em>All datasets have been synthesized and normalized for narrative clarity.</em>
@@ -138,23 +142,23 @@
             <span class="close-btn" id="close-more">&times;</span>
             <h2>ℹ️ About This Project</h2>
             <p>
-                <strong>The Last Bite</strong> is an interactive scrollytelling dashboard created as 
-                a design assignment for <strong>SEG3125 — Design and Interactive Media</strong> 
+                <strong>The Last Bite</strong> is an interactive scrollytelling dashboard created as
+                a design assignment for <strong>SEG3125 — Design and Interactive Media</strong>
                 at the University of Ottawa.
             </p>
             <p>
-                The goal was to apply <strong>Gestalt design principles</strong> (Proximity, Similarity, 
-                Figure-Ground, Continuity, and Common Fate) to transform complex climate and 
+                The goal was to apply <strong>Gestalt design principles</strong> (Proximity, Similarity,
+                Figure-Ground, Continuity, and Common Fate) to transform complex climate and
                 agricultural data into a compelling, narrative-driven user experience.
             </p>
             <p>
-                This project explores how data visualization can humanize abstract statistics—turning 
+                This project explores how data visualization can humanize abstract statistics—turning
                 vanilla's 500-year journey into a lens for understanding climate vulnerability.
             </p>
             <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #e0d3c0; text-align: center;">
                 <a href="https://sequoya126.github.io/PortfolioAs1/" target="_blank">🌐 View My Portfolio</a>
                 <span style="display: block; margin-top: 8px; font-size: 0.8rem; color: #a0826a;">
-                    
+
                 </span>
             </div>
         </div>
@@ -162,10 +166,10 @@
 
     <!-- Main Application Script -->
     <script src="js/script.js"></script>
-    
+
     <!-- Modal Control Script (inline for simplicity, or you can move to script.js) -->
     <script>
-        (function() {
+        (function () {
             const dataModal = document.getElementById('data-modal');
             const moreModal = document.getElementById('more-modal');
             const dataLink = document.getElementById('data-link');
@@ -209,4 +213,5 @@
         })();
     </script>
 </body>
+
 </html>
