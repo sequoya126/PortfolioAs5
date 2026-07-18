@@ -6,7 +6,7 @@
 }
 
 html {
-    scroll-behavior: smooth; /* Smooth anchor scrolling */
+    scroll-behavior: smooth;
 }
 
 body {
@@ -15,7 +15,7 @@ body {
     color: #3a2c1b;
 }
 
-/* ----- FIXED NAVBAR (Gestalt: Figure-Ground) ----- */
+/* ----- FIXED NAVBAR ----- */
 .navbar {
     position: fixed;
     top: 0;
@@ -30,7 +30,6 @@ body {
     height: 64px;
     display: flex;
     align-items: center;
-    transition: background 0.3s ease;
 }
 
 .nav-container {
@@ -78,12 +77,11 @@ body {
 .nav-links a:hover {
     color: #5b3e1a;
 }
-
 .nav-links a:hover::after {
     width: 100%;
 }
 
-/* ----- HERO SECTION (Full Viewport) ----- */
+/* ----- HERO SECTION (No more stars!) ----- */
 .hero-section {
     min-height: 100vh;
     display: flex;
@@ -91,28 +89,27 @@ body {
     justify-content: center;
     text-align: center;
     padding: 80px 20px 40px;
-    /* Subtle gradient to mimic vanilla/earth tones */
-    background: linear-gradient(160deg, #fdf8f0 0%, #f0e3d0 60%, #e8d5bc 100%);
+    /* Soft, warm radial glow instead of stars */
+    background: radial-gradient(ellipse at 50% 30%, #f7ede0 0%, #f0e3d0 55%, #e3d0b8 100%);
     position: relative;
     border-bottom: 2px dashed #d4c3a8;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.05"><path d="M50 10 L55 35 L80 35 L62 50 L70 75 L50 60 L30 75 L38 50 L20 35 L45 35 Z"/></svg>');
-    background-size: 120px 120px;
-    pointer-events: none;
 }
 
 .hero-content {
     max-width: 850px;
     position: relative;
     z-index: 2;
+}
+
+/* Vanilla Orchid Icon (centered, clean) */
+.hero-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    display: block;
+    object-fit: contain;
+    opacity: 0.9;
+    filter: drop-shadow(0 4px 12px rgba(91, 62, 26, 0.15));
 }
 
 .hero-content h1 {
@@ -149,7 +146,7 @@ body {
     letter-spacing: 0.3px;
 }
 
-/* Scroll Indicator (Gestalt: Continuity) */
+/* Scroll Indicator */
 .scroll-indicator {
     margin-top: 10px;
 }
@@ -182,7 +179,7 @@ body {
     50% { transform: translateY(8px); }
 }
 
-/* ----- INTRO / PURPOSE SECTION ----- */
+/* ----- INTRO SECTION ----- */
 .intro-section {
     padding: 80px 20px 60px;
     max-width: 800px;
@@ -218,14 +215,13 @@ body {
     font-weight: 300;
 }
 
-/* ----- SCROLL CONTAINER (for Vue charts) ----- */
+/* ----- SCROLL CONTAINER (Vue charts) ----- */
 .scroll-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* ----- EACH ACT TAKES FULL VIEWPORT HEIGHT ----- */
 .act {
     min-height: 100vh;
     display: flex;
@@ -237,7 +233,6 @@ body {
     position: relative;
 }
 
-/* ----- STICKY CHART AREA (The "Figure") ----- */
 .chart-wrapper {
     width: 100%;
     max-width: 800px;
@@ -247,25 +242,20 @@ body {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     padding: 20px;
     margin: 30px 0;
-    
-    /* Gestalt: Figure-Ground (charts pop against cream background) */
     opacity: 0.2;
     transform: translateY(30px);
     transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), 
                 transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 .chart-wrapper.visible {
     opacity: 1;
     transform: translateY(0);
 }
-
 .chart-wrapper canvas {
     width: 100% !important;
     height: 100% !important;
 }
 
-/* ----- NARRATIVE TEXT ----- */
 .story-text {
     max-width: 700px;
     text-align: center;
@@ -273,7 +263,6 @@ body {
     line-height: 1.8;
     color: #4a3e2e;
 }
-
 .story-text h2 {
     font-size: 2.8rem;
     font-family: 'Georgia', 'Times New Roman', serif;
@@ -281,7 +270,6 @@ body {
     margin-bottom: 16px;
     letter-spacing: -0.5px;
 }
-
 .story-text .highlight {
     background: #f0e3d0;
     padding: 0 8px;
@@ -300,6 +288,119 @@ body {
     line-height: 1.8;
 }
 
+/* ========================================================== */
+/* ==================== MODAL STYLES ======================== */
+/* ========================================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #fdf8f0;
+    max-width: 620px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px 44px;
+    border-radius: 24px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 2rem;
+    font-weight: 300;
+    color: #7a6248;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    line-height: 1;
+}
+.close-btn:hover {
+    color: #3a2510;
+    transform: rotate(90deg);
+}
+
+.modal-content h2 {
+    font-family: 'Georgia', serif;
+    font-size: 1.8rem;
+    color: #3a2510;
+    margin-bottom: 16px;
+}
+
+.modal-content p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4a3e2e;
+    margin-bottom: 12px;
+}
+
+.modal-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 8px;
+}
+
+.modal-content ul li {
+    padding: 10px 0 10px 28px;
+    border-bottom: 1px solid #f0e3d0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4a3e2e;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23c5a67c" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>') left center no-repeat;
+    background-size: 16px;
+}
+
+.modal-content ul li:last-child {
+    border-bottom: none;
+}
+
+.portfolio-link {
+    display: inline-block;
+    padding: 10px 28px;
+    background: #5b3e1a;
+    color: #fdf8f0;
+    text-decoration: none;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.portfolio-link:hover {
+    background: #3a2510;
+    transform: scale(1.02);
+}
+
 /* ----- RESPONSIVE ----- */
 @media (max-width: 768px) {
     .hero-content h1 {
@@ -307,6 +408,10 @@ body {
     }
     .hero-subtitle {
         font-size: 1rem;
+    }
+    .hero-icon {
+        width: 56px;
+        height: 56px;
     }
     .story-text h2 {
         font-size: 2rem;
@@ -322,6 +427,15 @@ body {
         padding: 0 20px;
     }
     .nav-links {
-        gap: 16px;
+        gap: 14px;
+    }
+    .nav-links a {
+        font-size: 0.8rem;
+    }
+    .modal-content {
+        padding: 30px 24px;
+    }
+    .modal-content h2 {
+        font-size: 1.5rem;
     }
 }
