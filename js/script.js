@@ -8,7 +8,7 @@ const app = createApp({
         // --- Reactive Data: All Act Content ---
         const acts = ref([
             {
-                title: '🌱 The Perfect Recipe',
+                title: ' The Perfect Recipe',
                 text: `<em>Vanilla planifolia</em> is one of nature's most demanding crops. 
                        It needs <span class="highlight">27–29°C</span> days, 
                        <span class="highlight">70–80%</span> humidity, 
@@ -28,8 +28,21 @@ const app = createApp({
                 },
                 options: { scales: { r: { min: 0, max: 100, ticks: { stepSize: 20 } } } }
             },
+
+            // -- Act II : Interactive HeatMAP --
+
             {
-                title: '🌍 The Vanilla Belt',
+                title: '🗺️ The Vanilla Belt',
+                text: `Currently, vanilla thrives in a narrow band <span class="highlight">20° north and south</span> of the equator. 
+               But look closely at the heatmap below. <strong>Red hotspots</strong> are ideal zones. 
+               Toggle the slider to see how these zones <strong>shift and shrink</strong> by 2050.`,
+                chartType: 'heatmap', // We'll handle this in the mounted hook
+                data: null, // Not used for maps
+                options: null
+            },
+
+            {
+                title: ' The Vanilla Belt',
                 text: `Despite its global fame, <span class="highlight">80%</span> of the world's 
                        vanilla comes from a single region — the Sava district of Madagascar. 
                        Indonesia and Mexico trail far behind.`,
@@ -46,7 +59,7 @@ const app = createApp({
                 options: { plugins: { legend: { display: false } } }
             },
             {
-                title: '⛵ Voyage Across Oceans',
+                title: ' Voyage Across Oceans',
                 text: `From Mexico (1520) to Europe, then to Réunion where 
                        <span class="highlight">12-year-old Edmond Albius</span> 
                        invented hand-pollination in 1841. That single moment unlocked the global industry.`,
@@ -67,7 +80,7 @@ const app = createApp({
                 options: { plugins: { legend: { display: false } } }
             },
             {
-                title: '⚠️ The Fragile Future',
+                title: 'The Fragile Future',
                 text: `Madagascar is the <span class="highlight">4th most climate-vulnerable</span> 
                        country on Earth. By 2050, ideal growing zones in Mexico could shrink by 
                        50%. The vines are already suffering.`,
@@ -97,7 +110,7 @@ const app = createApp({
                 options: { plugins: { legend: { position: 'top' } } }
             },
             {
-                title: '🍨 The Last Scoop',
+                title: 'The Last Scoop',
                 text: `The market hit <span class="highlight">$13.1 billion</span> in 2025. 
                        But this isn't abundance — it's scarcity driving prices up. 
                        Some stories don't get a sequel.`,
