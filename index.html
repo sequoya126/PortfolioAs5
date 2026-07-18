@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Page Title -->
+      <!-- This is an assignment for SEG3125 - Assigment 5. -->
+    <title> The Last Bite – Vanilla Scrollytelling</title>
+    
+    <!-- External Styles -->
+    <link rel="stylesheet" href="css/styles.css" />
+    
+    <!-- External Libraries (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <div class="scroll-container">
+            
+            <!-- Loop over all acts using Vue's v-for -->
+            <section 
+                v-for="(act, index) in acts" 
+                :key="index"
+                :id="'act-' + index" 
+                class="act"
+            >
+                <!-- Narrative Text -->
+                <div class="story-text">
+                    <h2 v-html="act.title"></h2>
+                    <p v-html="act.text"></p>
+                </div>
+                
+                <!-- Chart Wrapper -->
+                <div 
+                    class="chart-wrapper" 
+                    :id="'chart-wrapper-' + index"
+                >
+                    <canvas :id="'chart-' + index"></canvas>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+    
+    <!-- Main Application Script -->
+    <script src="js/script.js"></script>
+</body>
+</html>
