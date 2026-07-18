@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Page Title -->
-      <!-- This is an assignment for SEG3125 - Assigment 5. -->
-    <title> The Last Bite – Vanilla Scrollytelling</title>
+    <!-- This is an assignment for SEG3125 - Assignment 5. -->
+    <title>The Last Bite – Vanilla Scrollytelling</title>
     
     <!-- External Styles -->
     <link rel="stylesheet" href="css/style.css" />
@@ -15,7 +14,65 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    
+
+    <!-- ====================  NAVBAR ==================== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <span class="logo">🌿 The Last Bite</span>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#intro">About</a></li>
+                <li><a href="#act-0">The Story</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ==================== HERO SECTION (Full Screen) ==================== -->
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <!-- The EU-style evocative title -->
+            <h1>What Climate Change <br>Can Take From Us</h1>
+            <p class="hero-subtitle">
+                The 500-year journey of vanilla—from sacred orchid to global obsession, 
+                and the climate crisis threatening its last breath.
+            </p>
+            <div class="hero-meta">
+                <span>Published July 18, 2026</span>
+                <span>•</span>
+                <span>⏱ 5 min read</span>
+            </div>
+            <!-- Downward arrow inviting scroll (Gestalt: Continuity) -->
+            <div class="scroll-indicator">
+                <a href="#intro" class="arrow-link">
+                    <span class="arrow-text">Begin the story</span>
+                    <span class="arrow-line">⌄</span>
+                </a>
+            </div>
+        </div>
+        <!-- Optional: A subtle decorative overlay/background texture goes here via CSS -->
+    </section>
+
+    <!-- ==================== INTRO / PURPOSE STATEMENT ==================== -->
+    <section id="intro" class="intro-section">
+        <div class="intro-container">
+            <h2>Why this story matters</h2>
+            <p>
+                Vanilla is the world's second-most expensive spice. But behind its sweet aroma 
+                lies a fragile supply chain, reliant on <strong>one specific bee</strong>, 
+                <strong>one 12-year-old's hand-pollination method</strong>, and 
+                <strong>one climate-vulnerable island</strong>—Madagascar.
+            </p>
+            <p>
+                This interactive documentary uses climate data, trade routes, and price 
+                forecasts to trace how rising temperatures are rewriting the fate of an 
+                entire agricultural heritage. <strong>What happens when a crop's 
+                "perfect recipe" no longer exists anywhere on Earth?</strong>
+            </p>
+            <div class="intro-divider">— ↓ Scroll to explore ↓ —</div>
+        </div>
+    </section>
+
+    <!-- ==================== VUE SCROLLYTELLING APP ==================== -->
     <div id="app">
         <div class="scroll-container">
             
@@ -44,6 +101,12 @@
         </div>
     </div>
     
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Data sourced from FAOSTAT, World Bank, and CHELSA Climate Projections.</p>
+        <p>Assignment for SEG3125 — Design &amp; Interactive Media.</p>
+    </footer>
+
     <!-- Main Application Script -->
     <script src="js/script.js"></script>
 </body>
