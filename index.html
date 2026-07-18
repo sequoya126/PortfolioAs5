@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    <!-- ====================  NAVBAR ==================== -->
+    <!-- ==================== FIXED NAVBAR ==================== -->
     <nav class="navbar">
         <div class="nav-container">
             <span class="logo">🌿 The Last Bite</span>
@@ -23,6 +23,8 @@
                 <li><a href="#hero">Home</a></li>
                 <li><a href="#intro">About</a></li>
                 <li><a href="#act-0">The Story</a></li>
+                <li><a href="#" id="data-link">Data</a></li>
+                <li><a href="#" id="more-link">More</a></li>
             </ul>
         </div>
     </nav>
@@ -30,14 +32,16 @@
     <!-- ==================== HERO SECTION (Full Screen) ==================== -->
     <section id="hero" class="hero-section">
         <div class="hero-content">
-            <!-- The EU-style evocative title -->
+            <!-- Your Vanilla Orchid Icon (centered above title) -->
+            <img src="images/vanilla-icon.png" alt="Vanilla Orchid" class="hero-icon" />
+            
             <h1>What Climate Change <br>Can Take From Us</h1>
             <p class="hero-subtitle">
                 The 500-year journey of vanilla—from sacred orchid to global obsession, 
                 and the climate crisis threatening its last breath.
             </p>
             <div class="hero-meta">
-                <span>Published July 18, 2026</span>
+                <span>📅 Published July 18, 2026</span>
                 <span>•</span>
                 <span>⏱ 5 min read</span>
             </div>
@@ -49,7 +53,6 @@
                 </a>
             </div>
         </div>
-        <!-- Optional: A subtle decorative overlay/background texture goes here via CSS -->
     </section>
 
     <!-- ==================== INTRO / PURPOSE STATEMENT ==================== -->
@@ -101,13 +104,111 @@
         </div>
     </div>
     
-    <!-- Footer -->
+    <!-- ==================== FOOTER ==================== -->
     <footer class="site-footer">
         <p>Data sourced from FAOSTAT, World Bank, and CHELSA Climate Projections.</p>
         <p>Assignment for SEG3125 — Design &amp; Interactive Media.</p>
     </footer>
 
+    <!-- ========================================================== -->
+    <!-- ==================== MODAL POPUPS ======================== -->
+    <!-- ========================================================== -->
+
+    <!-- DATA MODAL -->
+    <div id="data-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" id="close-data">&times;</span>
+            <h2>📊 Data Sources</h2>
+            <p>All data used in this interactive story comes from the following publicly available sources:</p>
+            <ul>
+                <li><strong>FAOSTAT</strong> — Global vanilla production volumes by country (1961–present).</li>
+                <li><strong>World Bank / UN Comtrade</strong> — Import/export trade flows and commodity values.</li>
+                <li><strong>CHELSA Bioclimate Projections</strong> — Future climate suitability scenarios (2050).</li>
+                <li><strong>IndexBox / Tridge</strong> — Historical vanilla price indices and market volatility.</li>
+                <li><strong>Duke University (PLOS Climate)</strong> — Farmer surveys on climate impacts in Madagascar.</li>
+                <li><strong>Historical Archives</strong> — Colonial records and agricultural timelines (1520–present).</li>
+            </ul>
+            <p style="margin-top: 16px; font-size: 0.9rem; color: #7a6248;">
+                <em>All datasets have been synthesized and normalized for narrative clarity.</em>
+            </p>
+        </div>
+    </div>
+
+    <!-- MORE MODAL -->
+    <div id="more-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" id="close-more">&times;</span>
+            <h2>ℹ️ About This Project</h2>
+            <p>
+                <strong>The Last Bite</strong> is an interactive scrollytelling dashboard created as 
+                a design assignment for <strong>SEG3125 — Design and Interactive Media</strong> 
+                at the University of Ottawa.
+            </p>
+            <p>
+                The goal was to apply <strong>Gestalt design principles</strong> (Proximity, Similarity, 
+                Figure-Ground, Continuity, and Common Fate) to transform complex climate and 
+                agricultural data into a compelling, narrative-driven user experience.
+            </p>
+            <p>
+                This project explores how data visualization can humanize abstract statistics—turning 
+                vanilla's 500-year journey into a lens for understanding climate vulnerability.
+            </p>
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #e0d3c0; text-align: center;">
+                <a href="#" class="portfolio-link" target="_blank">🌐 View My Portfolio</a>
+                <span style="display: block; margin-top: 8px; font-size: 0.8rem; color: #a0826a;">
+                    (Replace this link with your actual portfolio URL)
+                </span>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Application Script -->
     <script src="js/script.js"></script>
+    
+    <!-- Modal Control Script (inline for simplicity, or you can move to script.js) -->
+    <script>
+        (function() {
+            const dataModal = document.getElementById('data-modal');
+            const moreModal = document.getElementById('more-modal');
+            const dataLink = document.getElementById('data-link');
+            const moreLink = document.getElementById('more-link');
+            const closeData = document.getElementById('close-data');
+            const closeMore = document.getElementById('close-more');
+
+            function openModal(modal) {
+                if (modal) modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal(modal) {
+                if (modal) modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Open triggers
+            dataLink.addEventListener('click', (e) => { e.preventDefault(); openModal(dataModal); });
+            moreLink.addEventListener('click', (e) => { e.preventDefault(); openModal(moreModal); });
+
+            // Close buttons
+            closeData.addEventListener('click', () => closeModal(dataModal));
+            closeMore.addEventListener('click', () => closeModal(moreModal));
+
+            // Click outside to close
+            dataModal.addEventListener('click', (e) => {
+                if (e.target === dataModal) closeModal(dataModal);
+            });
+            moreModal.addEventListener('click', (e) => {
+                if (e.target === moreModal) closeModal(moreModal);
+            });
+
+            // Escape key to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal(dataModal);
+                    closeModal(moreModal);
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

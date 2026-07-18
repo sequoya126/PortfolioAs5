@@ -97,7 +97,6 @@ body {
     border-bottom: 2px dashed #d4c3a8;
 }
 
-/* Optional: Decorative "vanilla bean" texture via pseudo-element */
 .hero-section::before {
     content: '';
     position: absolute;
