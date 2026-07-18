@@ -46,6 +46,19 @@ body {
     font-size: 1.1rem;
     color: #5b3e1a;
     letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo .hero-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    display: block;
+    object-fit: contain;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 6px rgba(91, 62, 26, 0.12));
 }
 
 .nav-links {
