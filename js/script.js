@@ -199,11 +199,17 @@ const app = createApp({
         // ============================================================
         // 4. HEATMAP RENDER FUNCTION
         // ============================================================
+        // ============================================================
+        // 4. HEATMAP RENDER FUNCTION (UPDATED)
+        // ============================================================
         function renderHeatmap() {
             const mapContainer = document.getElementById('chart-wrapper-1');
-            if (!mapContainer) return;
+            if (!mapContainer) {
+                console.error('Heatmap container not found!');
+                return;
+            }
 
-            // Clear any existing map content (in case of re-render)
+            // Clear any existing map content
             mapContainer.innerHTML = '';
 
             // Add a div specifically for the map
@@ -215,33 +221,47 @@ const app = createApp({
             mapContainer.appendChild(mapDiv);
 
             // Initialize Leaflet Map
-            const map = L.map('vanilla-map').setView([0, 40], 2); // Centered on equator
+            const map = L.map('vanilla-map').setView([0, 40], 2);
 
-            // Base tile layer (light, clean background for good Figure-Ground contrast)
+            // Base tile layer (clean, light background)
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB'
             }).addTo(map);
 
-            // ----- MOCK DATA: Current Suitability (Lat, Lng, Intensity) -----
-            // We generate points around major vanilla regions: Madagascar, Indonesia, Mexico, PNG, Uganda
-            const currentData = generateVanillaPoints(1.0); // 1.0 = current climate
-            const futureData = generateVanillaPoints(0.6); // 0.6 = degraded future (shrinking)
+            // --- Check if the Heat plugin loaded ---
+            if (typeof L.heatLayer !== 'function') {
+                console.error('🔥 L.heatLayer is not a function. Plugin failed to load!');
+                // Fallback: show a text message on the map
+                mapDiv.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#7a6248;font-size:1rem;">⚠️ Heatmap plugin failed to load. Please check your internet connection.</div>';
+                return;
+            }
 
-            // Add Current Heatmap Layer
+            // ----- Generate boosted mock data -----
+            const currentData = generateVanillaPoints(1.2); // Boosted scalar for current
+            const futureData = generateVanillaPoints(0.5);  // Reduced scalar for future
+
+            console.log(`🌍 Current points generated: ${currentData.length}`);
+            console.log(`🔥 Future points generated: ${futureData.length}`);
+            console.log('Sample current point:', currentData[0]);
+
+            // --- Add Current Heatmap Layer with boosted radius ---
             const heatLayer = L.heatLayer(currentData, {
-                radius: 25,
-                blur: 15,
-                maxZoom: 10,
+                radius: 35,        // Increased from 25
+                blur: 20,          // Increased from 15
+                maxZoom: 8,
                 gradient: {
-                    0.2: '#fdf8f0', // Cream (low suitability)
-                    0.4: '#e8d5bc', // Light tan
-                    0.6: '#c5a67c', // Medium gold
-                    0.8: '#9a5c3a', // Burnt orange
-                    1.0: '#5b2a1a'  // Dark brown/red (perfect)
+                    0.0: '#fdf8f0', // Cream (very low)
+                    0.3: '#e8d5bc', // Light tan
+                    0.5: '#c5a67c', // Medium gold
+                    0.7: '#d94a38', // Bright red-orange (warning)
+                    1.0: '#5b1a0a'  // Deep burgundy (perfect)
                 }
             }).addTo(map);
 
-            // Add a toggle control (Current / 2050)
+            // Force a map resize after adding the layer to fix rendering glitches
+            setTimeout(() => map.invalidateSize(), 200);
+
+            // --- Add the Toggle Control (Current / 2050) ---
             const controlDiv = document.createElement('div');
             controlDiv.className = 'leaflet-control leaflet-bar';
             controlDiv.style.padding = '8px 12px';
@@ -254,40 +274,42 @@ const app = createApp({
             controlDiv.style.fontWeight = '500';
 
             const currentBtn = document.createElement('button');
-            currentBtn.innerText = '🌱 Current';
-            currentBtn.style.padding = '4px 14px';
+            currentBtn.innerText = '🌱 Current (2024)';
+            currentBtn.style.padding = '6px 16px';
             currentBtn.style.border = '2px solid #5b3e1a';
             currentBtn.style.borderRadius = '20px';
             currentBtn.style.background = '#5b3e1a';
             currentBtn.style.color = 'white';
             currentBtn.style.cursor = 'pointer';
+            currentBtn.style.transition = 'all 0.2s ease';
 
             const futureBtn = document.createElement('button');
             futureBtn.innerText = '🔥 2050 (RCP 4.5)';
-            futureBtn.style.padding = '4px 14px';
+            futureBtn.style.padding = '6px 16px';
             futureBtn.style.border = '2px solid #5b3e1a';
             futureBtn.style.borderRadius = '20px';
             futureBtn.style.background = 'transparent';
             futureBtn.style.color = '#5b3e1a';
             futureBtn.style.cursor = 'pointer';
+            futureBtn.style.transition = 'all 0.2s ease';
 
             controlDiv.appendChild(currentBtn);
             controlDiv.appendChild(futureBtn);
 
-            // Position the control on the map (top-right)
             const controlPos = L.control({ position: 'topright' });
             controlPos.onAdd = function () { return controlDiv; };
             controlPos.addTo(map);
 
-            // Toggle logic
+            // --- Toggle Logic (with forced redraw) ---
             currentBtn.addEventListener('click', function () {
                 heatLayer.setLatLngs(currentData);
                 currentBtn.style.background = '#5b3e1a';
                 currentBtn.style.color = 'white';
                 futureBtn.style.background = 'transparent';
                 futureBtn.style.color = '#5b3e1a';
-                // Add a tiny animation to the map to signal change
                 map.flyTo([0, 40], 2);
+                // Force redraw after fly
+                setTimeout(() => map.invalidateSize(), 300);
             });
 
             futureBtn.addEventListener('click', function () {
@@ -296,61 +318,63 @@ const app = createApp({
                 futureBtn.style.color = 'white';
                 currentBtn.style.background = 'transparent';
                 currentBtn.style.color = '#5b3e1a';
-                // Fly to a slightly different view to emphasize change
                 map.flyTo([5, 45], 2);
+                setTimeout(() => map.invalidateSize(), 300);
             });
 
-            // Trigger resize after a moment to ensure the map renders correctly
-            setTimeout(() => map.invalidateSize(), 100);
+            // Final resize after everything loads
+            setTimeout(() => map.invalidateSize(), 400);
         }
 
         // ============================================================
-        // 5. HELPER: Generate Synthetic Vanilla Points
+        // 5. HELPER: Generate Dense, High-Intensity Points
         // ============================================================
         function generateVanillaPoints(scalar) {
-            // Base hotspots (lat, lng) with intensity modifiers
-            // Scalar affects the intensity (1.0 = current, 0.5 = shrunk)
+            // Base hotspots with high base intensity (so they show up vividly)
             const regions = [
-                // Madagascar / Comoros (Indian Ocean)
-                { lat: -18, lng: 48, intensity: 0.95 * scalar },
-                { lat: -16, lng: 47, intensity: 0.85 * scalar },
-                { lat: -14, lng: 49, intensity: 0.70 * scalar },
-                { lat: -20, lng: 46, intensity: 0.60 * scalar },
-                { lat: -12, lng: 44, intensity: 0.50 * scalar }, // Comoros
-                // Indonesia / Papua New Guinea
-                { lat: -5, lng: 105, intensity: 0.85 * scalar },
-                { lat: -3, lng: 120, intensity: 0.75 * scalar },
-                { lat: -8, lng: 115, intensity: 0.70 * scalar },
-                { lat: -9, lng: 148, intensity: 0.80 * scalar }, // PNG
-                // Mexico / Central America
-                { lat: 20, lng: -98, intensity: 0.90 * scalar },
-                { lat: 18, lng: -96, intensity: 0.85 * scalar },
-                { lat: 16, lng: -94, intensity: 0.70 * scalar },
+                // Madagascar / Comoros
+                { lat: -18, lng: 48, intensity: 1.8 * scalar },
+                { lat: -16, lng: 47, intensity: 1.6 * scalar },
+                { lat: -14, lng: 49, intensity: 1.4 * scalar },
+                { lat: -20, lng: 46, intensity: 1.1 * scalar },
+                { lat: -12, lng: 44, intensity: 0.9 * scalar },
+                // Indonesia / PNG
+                { lat: -5, lng: 105, intensity: 1.5 * scalar },
+                { lat: -3, lng: 120, intensity: 1.3 * scalar },
+                { lat: -8, lng: 115, intensity: 1.2 * scalar },
+                { lat: -9, lng: 148, intensity: 1.4 * scalar },
+                // Mexico
+                { lat: 20, lng: -98, intensity: 1.7 * scalar },
+                { lat: 18, lng: -96, intensity: 1.5 * scalar },
+                { lat: 16, lng: -94, intensity: 1.2 * scalar },
                 // Uganda / East Africa
-                { lat: 0, lng: 32, intensity: 0.60 * scalar },
-                { lat: 1, lng: 33, intensity: 0.55 * scalar },
-                // Small scattering to simulate spread
-                { lat: -22, lng: 30, intensity: 0.20 * scalar }, // Southern Africa (low)
-                { lat: 10, lng: -85, intensity: 0.40 * scalar }, // Costa Rica
+                { lat: 0, lng: 32, intensity: 1.0 * scalar },
+                { lat: 1, lng: 33, intensity: 0.9 * scalar },
+                // Costa Rica / Central America
+                { lat: 10, lng: -85, intensity: 0.8 * scalar },
             ];
 
-            // Generate a dense scatter of points around each hotspot (for the heatmap to look smooth)
             const points = [];
             regions.forEach(region => {
-                // Each hotspot generates 15-25 random nearby points
-                const numPoints = Math.floor(Math.random() * 15) + 15;
+                // Generate 30-50 dense points per region for a smooth heatmap
+                const numPoints = Math.floor(Math.random() * 25) + 30;
                 for (let i = 0; i < numPoints; i++) {
-                    const latOffset = (Math.random() - 0.5) * 4.0; // ±2 degrees
-                    const lngOffset = (Math.random() - 0.5) * 4.0;
-                    // Intensity drops off slightly as you move away from the center
-                    const distanceFactor = 1 - (Math.abs(latOffset) + Math.abs(lngOffset)) / 8;
-                    const finalIntensity = Math.max(0, region.intensity * distanceFactor * (0.8 + 0.2 * Math.random()));
+                    const latOffset = (Math.random() - 0.5) * 3.5;
+                    const lngOffset = (Math.random() - 0.5) * 3.5;
+                    // Intensity drops smoothly from center
+                    const dist = Math.sqrt(latOffset * latOffset + lngOffset * lngOffset);
+                    const distanceFactor = Math.max(0, 1 - (dist / 4.5));
+                    // Add slight random variation
+                    const finalIntensity = Math.max(0, region.intensity * distanceFactor * (0.85 + 0.15 * Math.random()));
 
-                    points.push([
-                        region.lat + latOffset,
-                        region.lng + lngOffset,
-                        finalIntensity
-                    ]);
+                    // Only push if intensity is meaningful (> 0.05) to keep data clean
+                    if (finalIntensity > 0.05) {
+                        points.push([
+                            region.lat + latOffset,
+                            region.lng + lngOffset,
+                            Math.min(finalIntensity, 2.5) // Cap at 2.5 to keep gradient sensible
+                        ]);
+                    }
                 }
             });
             return points;
