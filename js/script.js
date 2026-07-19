@@ -245,16 +245,17 @@ const app = createApp({
             console.log('Sample current point:', currentData[0]);
 
             // --- Add Current Heatmap Layer with boosted radius ---
+            // --- Add Heatmap Layer with HIGH-CONTRAST palette ---
             const heatLayer = L.heatLayer(currentData, {
-                radius: 35,        // Increased from 25
-                blur: 20,          // Increased from 15
+                radius: 35,
+                blur: 20,
                 maxZoom: 8,
                 gradient: {
-                    0.0: '#fdf8f0', // Cream (very low)
-                    0.3: '#e8d5bc', // Light tan
-                    0.5: '#c5a67c', // Medium gold
-                    0.7: '#d94a38', // Bright red-orange (warning)
-                    1.0: '#5b1a0a'  // Deep burgundy (perfect)
+                    0.0: '#ffffb2',  // Pale yellow (faint, just to show presence)
+                    0.3: '#fecc5c',  // Bright yellow
+                    0.5: '#fd8d3c',  // Orange
+                    0.8: '#f03b20',  // Red-orange
+                    1.0: '#bd0026'   // Deep crimson red (perfect vanilla zone)
                 }
             }).addTo(map);
 
