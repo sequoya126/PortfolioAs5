@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🧪 Heatmap Test</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <style>
+        body { margin: 0; }
+        #mymap { height: 100vh; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="mymap"></div>
+    <script>
+        // 1. Create the map
+        var map = L.map('mymap').setView([0, 40], 2);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        // 2. Generate HARD-CODED test points (bypasses our complex function)
+        var points = [];
+        var testSpots = [
+            [-18, 48], // Madagascar
+            [-16, 47],
+            [-5, 105], // Indonesia
+            [-3, 120],
+            [20, -98], // Mexico
+            [18, -96]
+        ];
+
+        testSpots.forEach(function(center) {
+            // Generate 80 random points around each center
+            for (var i = 0; i < 80; i++) {
+                var lat = center[0] + (Math.random() - 0.5) * 3.5;
+                var lng = center[1] + (Math.random() - 0.5) * 3.5;
+                var intensity = 0.8 + Math.random() * 0.7; // 0.8 to 1.5
+                points.push([lat, lng, intensity]);
+            }
+        });
+
+        console.log('✅ Test points generated:', points.length);
+
+        // 3. Add the heatmap layer with obvious colors
+        var heatLayer = L.heatLayer(points, {
+            radius: 40,
+            blur: 25,
+            minOpacity: 0.3,
+            gradient: {
+                0.0: '#ffffb2',
+                0.3: '#fecc5c',
+                0.6: '#fd8d3c',
+                0.9: '#f03b20',
+                1.0: '#bd0026'
+            }
+        }).addTo(map);
+
+        // 4. Resize the map after a moment
+        setTimeout(function() { map.invalidateSize(); }, 300);
+    </script>
+</body>
+</html> 

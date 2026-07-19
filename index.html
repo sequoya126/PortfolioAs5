@@ -1,216 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- This is an assignment for SEG3125 - Assignment 5. -->
     <title>The Last Bite – Vanilla Scrollytelling</title>
-
-    <!-- External Styles -->
     <link rel="stylesheet" href="css/style.css" />
-
-    <!-- External Libraries (CDN) -->
+    <!-- Leaflet CSS (for iframe) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Chart.js and Vue -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Leaflet.heat plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
 </head>
-
 <body>
 
-    <!-- ==================== FIXED NAVBAR ==================== -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <span class="logo"> <img src="images/vanilla-icon.png" alt="Vanilla Orchid" class="hero-icon" /> The Last
-                Bite</span>
-            <ul class="nav-links">
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#intro">About</a></li>
-                <li><a href="#act-0">The Story</a></li>
-                <li><a href="#" id="data-link">Data</a></li>
-                <li><a href="#" id="more-link">More</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- ==================== HERO SECTION (Full Screen) ==================== -->
-    <section id="hero" class="hero-section">
-        <div class="hero-content">
-
-            <h1>What Climate Change <br>Can Take From Us</h1>
-            <p class="hero-subtitle">
-                The 500-year journey of vanilla—from sacred orchid to global obsession,
-                and the climate crisis threatening its last breath.
-            </p>
-            <div class="hero-meta">
-                <span>📅 Published July 18, 2026</span>
-                <span>•</span>
-                <span>⏱ 5 min read</span>
-            </div>
-            <!-- Downward arrow inviting scroll (Gestalt: Continuity) -->
-            <div class="scroll-indicator">
-                <a href="#intro" class="arrow-link">
-                    <span class="arrow-text">Begin the story</span>
-                    <span class="arrow-line">⌄</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== INTRO / PURPOSE STATEMENT ==================== -->
-    <section id="intro" class="intro-section">
-        <div class="intro-container">
-            <h2>Why this story matters</h2>
-            <p>
-                Vanilla is the world's second-most expensive spice. But behind its sweet aroma
-                lies a fragile supply chain, reliant on <strong>one specific bee</strong>,
-                <strong>one 12-year-old's hand-pollination method</strong>, and
-                <strong>one climate-vulnerable island</strong>—Madagascar.
-            </p>
-            <p>
-                This interactive documentary uses climate data, trade routes, and price
-                forecasts to trace how rising temperatures are rewriting the fate of an
-                entire agricultural heritage. <strong>What happens when a crop's
-                    "perfect recipe" no longer exists anywhere on Earth?</strong>
-            </p>
-            <div class="intro-divider">— ↓ Scroll to explore ↓ —</div>
-        </div>
-    </section>
-
-    <!-- ==================== VUE SCROLLYTELLING APP ==================== -->
+    <!-- ============================================================ -->
+    <!-- EVERYTHING INSIDE #app                                        -->
+    <!-- ============================================================ -->
     <div id="app">
-        <div class="scroll-container">
 
-            <!-- Loop over all acts using Vue's v-for -->
+        <!-- FIXED NAVBAR -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <span class="logo">🌿 The Last Bite</span>
+                <ul class="nav-links">
+                    <li><a href="#hero">{{ translations[currentLang].navHome }}</a></li>
+                    <li><a href="#intro">{{ translations[currentLang].navAbout }}</a></li>
+                    <li><a href="#act-0">{{ translations[currentLang].navStory }}</a></li>
+                    <li><a href="#" id="data-link">{{ translations[currentLang].navData }}</a></li>
+                    <li><a href="#" id="more-link">{{ translations[currentLang].navMore }}</a></li>
+                </ul>
+                <div class="lang-switcher">
+                    <button @click="currentLang = 'en'"
+                            :style="{
+                                background: currentLang === 'en' ? '#5b3e1a' : 'transparent',
+                                color: currentLang === 'en' ? 'white' : '#5b3e1a',
+                                border: '1px solid #5b3e1a',
+                                borderRadius: '20px',
+                                padding: '4px 14px',
+                                cursor: 'pointer',
+                                fontWeight: '600',
+                                fontSize: '0.75rem'
+                            }">EN</button>
+                    <button @click="currentLang = 'fr'"
+                            :style="{
+                                background: currentLang === 'fr' ? '#5b3e1a' : 'transparent',
+                                color: currentLang === 'fr' ? 'white' : '#5b3e1a',
+                                border: '1px solid #5b3e1a',
+                                borderRadius: '20px',
+                                padding: '4px 14px',
+                                cursor: 'pointer',
+                                fontWeight: '600',
+                                fontSize: '0.75rem'
+                            }">FR</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <img src="images/vanilla-icon.png" alt="Vanilla Orchid" class="hero-icon" />
+                <h1 v-html="translations[currentLang].heroTitle"></h1>
+                <p class="hero-subtitle">{{ translations[currentLang].heroSubtitle }}</p>
+                <div class="hero-meta">
+                    <span>📅 {{ translations[currentLang].publishedDate }}</span>
+                    <span>•</span>
+                    <span>⏱ {{ translations[currentLang].readTime }}</span>
+                </div>
+                <div class="scroll-indicator">
+                    <a href="#intro" class="arrow-link">
+                        <span class="arrow-text">{{ translations[currentLang].beginStory }}</span>
+                        <span class="arrow-line">⌄</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTRO -->
+        <section id="intro" class="intro-section">
+            <div class="intro-container">
+                <h2>{{ translations[currentLang].introTitle }}</h2>
+                <p v-html="translations[currentLang].introText1"></p>
+                <p v-html="translations[currentLang].introText2"></p>
+                <div class="intro-divider">— ↓ {{ translations[currentLang].scrollExplore }} ↓ —</div>
+            </div>
+        </section>
+
+        <!-- SCROLLYTELLING ACTS -->
+        <div class="scroll-container">
             <section v-for="(act, index) in acts" :key="index" :id="'act-' + index" class="act">
-                <!-- Narrative Text -->
                 <div class="story-text">
                     <h2 v-html="act.title"></h2>
                     <p v-html="act.text"></p>
                 </div>
 
-                <!-- Chart Wrapper -->
+                <!-- Dropdown for Bar Chart (index 2) -->
+                <div v-if="index === 2" style="text-align:center;margin-bottom:20px;width:100%;max-width:500px;">
+                    <label for="region-select" style="font-weight:600;margin-right:12px;color:#4a3e2e;">
+                        {{ translations[currentLang].filterRegion }}:
+                    </label>
+                    <select id="region-select"
+                            @change="updateBarChart($event.target.value)"
+                            style="padding:8px 18px;border-radius:30px;border:1px solid #d4c3a8;background:#fdf8f0;font-size:0.9rem;cursor:pointer;outline:none;">
+                        <option value="all">{{ translations[currentLang].allCountries }}</option>
+                        <option value="madagascar">Madagascar</option>
+                        <option value="indonesia">Indonesia</option>
+                        <option value="mexico">Mexico</option>
+                    </select>
+                </div>
+
                 <div class="chart-wrapper" :id="'chart-wrapper-' + index">
-                    <canvas :id="'chart-' + index"></canvas>
+                    <canvas v-if="index !== 1" :id="'chart-' + index"></canvas>
+                    <!-- Heatmap (index 1) is handled by the iframe in renderHeatmap() -->
                 </div>
             </section>
-
         </div>
-    </div>
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="site-footer">
-        <p>Data sourced from FAOSTAT, World Bank, and CHELSA Climate Projections.</p>
-        <p>Assignment for SEG3125 — Design &amp; Interactive Media.</p>
-    </footer>
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <p>{{ translations[currentLang].footerData }}</p>
+            <p>{{ translations[currentLang].footerAssignment }}</p>
+        </footer>
 
-    <!-- ========================================================== -->
-    <!-- ==================== MODAL POPUPS ======================== -->
-    <!-- ========================================================== -->
-
-    <!-- DATA MODAL -->
-    <div id="data-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-btn" id="close-data">&times;</span>
-            <h2>📊 Data Sources</h2>
-            <p>All data used in this interactive story comes from the following publicly available sources:</p>
-            <ul>
-                <li><strong>FAOSTAT</strong> — Global vanilla production volumes by country (1961–present).</li>
-                <li><strong>World Bank / UN Comtrade</strong> — Import/export trade flows and commodity values.</li>
-                <li><strong>CHELSA Bioclimate Projections</strong> — Future climate suitability scenarios (2050).</li>
-                <li><strong>IndexBox / Tridge</strong> — Historical vanilla price indices and market volatility.</li>
-                <li><strong>Duke University (PLOS Climate)</strong> — Farmer surveys on climate impacts in Madagascar.
-                </li>
-                <li><strong>Historical Archives</strong> — Colonial records and agricultural timelines (1520–present).
-                </li>
-            </ul>
-            <p style="margin-top: 16px; font-size: 0.9rem; color: #7a6248;">
-                <em>All datasets have been synthesized and normalized for narrative clarity.</em>
-            </p>
-        </div>
-    </div>
-
-    <!-- MORE MODAL -->
-    <div id="more-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-btn" id="close-more">&times;</span>
-            <h2>ℹ️ About This Project</h2>
-            <p>
-                <strong>The Last Bite</strong> is an interactive scrollytelling dashboard created as
-                a design assignment for <strong>SEG3125 — Design and Interactive Media</strong>
-                at the University of Ottawa.
-            </p>
-            <p>
-                The goal was to apply <strong>Gestalt design principles</strong> (Proximity, Similarity,
-                Figure-Ground, Continuity, and Common Fate) to transform complex climate and
-                agricultural data into a compelling, narrative-driven user experience.
-            </p>
-            <p>
-                This project explores how data visualization can humanize abstract statistics—turning
-                vanilla's 500-year journey into a lens for understanding climate vulnerability.
-            </p>
-            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid #e0d3c0; text-align: center;">
-                <a href="https://sequoya126.github.io/PortfolioAs1/" target="_blank">🌐 View My Portfolio</a>
-                <span style="display: block; margin-top: 8px; font-size: 0.8rem; color: #a0826a;">
-
-                </span>
+        <!-- MODALS -->
+        <div id="data-modal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-btn" id="close-data">&times;</span>
+                <h2>📊 {{ translations[currentLang].dataTitle }}</h2>
+                <p>{{ translations[currentLang].dataIntro }}</p>
+                <ul>
+                    <li><strong>FAOSTAT</strong> — {{ translations[currentLang].dataFaostat }}</li>
+                    <li><strong>World Bank / UN Comtrade</strong> — {{ translations[currentLang].dataTrade }}</li>
+                    <li><strong>CHELSA Bioclimate Projections</strong> — {{ translations[currentLang].dataChelsa }}</li>
+                    <li><strong>IndexBox / Tridge</strong> — {{ translations[currentLang].dataPrices }}</li>
+                    <li><strong>Duke University (PLOS Climate)</strong> — {{ translations[currentLang].dataDuke }}</li>
+                    <li><strong>{{ translations[currentLang].dataArchives }}</strong></li>
+                </ul>
+                <p style="margin-top:16px;font-size:0.9rem;color:#7a6248;">
+                    <em>{{ translations[currentLang].dataNote }}</em>
+                </p>
             </div>
         </div>
-    </div>
 
-    <!-- Main Application Script -->
-    <script src="js/script.js"></script>
+        <div id="more-modal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-btn" id="close-more">&times;</span>
+                <h2>ℹ️ {{ translations[currentLang].moreTitle }}</h2>
+                <p><strong>{{ translations[currentLang].moreProject }}</strong></p>
+                <p>{{ translations[currentLang].moreGoal }}</p>
+                <p>{{ translations[currentLang].moreExplore }}</p>
+                <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e0d3c0;text-align:center;">
+                    <a href="#" class="portfolio-link" target="_blank">🌐 {{ translations[currentLang].morePortfolio }}</a>
+                    <span style="display:block;margin-top:8px;font-size:0.8rem;color:#a0826a;">
+                        {{ translations[currentLang].morePlaceholder }}
+                    </span>
+                </div>
+            </div>
+        </div>
 
-    <!-- Modal Control Script (inline for simplicity, or you can move to script.js) -->
-    <script>
-        (function () {
-            const dataModal = document.getElementById('data-modal');
-            const moreModal = document.getElementById('more-modal');
-            const dataLink = document.getElementById('data-link');
-            const moreLink = document.getElementById('more-link');
-            const closeData = document.getElementById('close-data');
-            const closeMore = document.getElementById('close-more');
+    </div> <!-- end #app -->
 
-            function openModal(modal) {
-                if (modal) modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal(modal) {
-                if (modal) modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-
-            // Open triggers
-            dataLink.addEventListener('click', (e) => { e.preventDefault(); openModal(dataModal); });
-            moreLink.addEventListener('click', (e) => { e.preventDefault(); openModal(moreModal); });
-
-            // Close buttons
-            closeData.addEventListener('click', () => closeModal(dataModal));
-            closeMore.addEventListener('click', () => closeModal(moreModal));
-
-            // Click outside to close
-            dataModal.addEventListener('click', (e) => {
-                if (e.target === dataModal) closeModal(dataModal);
-            });
-            moreModal.addEventListener('click', (e) => {
-                if (e.target === moreModal) closeModal(moreModal);
-            });
-
-            // Escape key to close
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeModal(dataModal);
-                    closeModal(moreModal);
-                }
-            });
-        })();
-    </script>
+    <!-- External Script -->
+    <script src="js/script.js?v=8"></script>
 </body>
-
 </html>
