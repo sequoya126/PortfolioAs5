@@ -6,25 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Last Bite – Vanilla Scrollytelling</title>
     <link rel="stylesheet" href="css/style.css" />
-    <!-- Leaflet CSS (for iframe) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- Chart.js and Vue -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body>
-
-    <!-- ============================================================ -->
-    <!-- EVERYTHING INSIDE #app                                        -->
-    <!-- ============================================================ -->
     <div id="app">
-
-        <!-- FIXED NAVBAR -->
         <nav class="navbar">
             <div class="nav-container">
-                <span class="logo">🌿 The Last Bite</span>
+                <span class="logo">
+                    <img src="images/vanilla-icon.png" alt="Vanilla Orchid" class="logo-icon" />
+                    The Last Bite
+                </span>
                 <ul class="nav-links">
                     <li><a href="#hero">{{ translations[currentLang].navHome }}</a></li>
                     <li><a href="#intro">{{ translations[currentLang].navAbout }}</a></li>
@@ -66,7 +61,7 @@
                 <h1 v-html="translations[currentLang].heroTitle"></h1>
                 <p class="hero-subtitle">{{ translations[currentLang].heroSubtitle }}</p>
                 <div class="hero-meta">
-                    <span>📅 {{ translations[currentLang].publishedDate }}</span>
+                    <span> {{ translations[currentLang].publishedDate }}</span>
                     <span>•</span>
                     <span>⏱ {{ translations[currentLang].readTime }}</span>
                 </div>
@@ -89,7 +84,6 @@
             </div>
         </section>
 
-        <!-- SCROLLYTELLING ACTS -->
         <div class="scroll-container">
             <section v-for="(act, index) in acts" :key="index" :id="'act-' + index" class="act">
                 <!-- Narrative Text -->
@@ -100,7 +94,6 @@
                     <p v-else v-html="act.textFr"></p>
                 </div>
 
-                <!-- Dropdown for Bar Chart (index 2) -->
                 <div v-if="index === 2" style="text-align:center;margin-bottom:20px;width:100%;max-width:500px;">
                     <label for="region-select" style="font-weight:600;margin-right:12px;color:#4a3e2e;">
                         {{ translations[currentLang].filterRegion }}:
@@ -116,12 +109,11 @@
 
                 <div class="chart-wrapper" :id="'chart-wrapper-' + index">
                     <canvas v-if="index !== 1" :id="'chart-' + index"></canvas>
-                    <!-- Heatmap (index 1) is handled by the iframe in renderHeatmap() -->
+                    
                 </div>
             </section>
         </div>
 
-        <!-- FOOTER -->
         <footer class="site-footer">
             <p>{{ translations[currentLang].footerData }}</p>
             <p>{{ translations[currentLang].footerAssignment }}</p>
@@ -164,9 +156,8 @@
             </div>
         </div>
 
-    </div> <!-- end #app -->
+    </div> 
 
-    <!-- External Script -->
     <script src="js/script.js?v=8"></script>
 </body>
 
