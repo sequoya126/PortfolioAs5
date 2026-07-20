@@ -37,7 +37,7 @@ const app = createApp({
                 moreGoal: 'The goal was to apply Gestalt design principles (Proximity, Similarity, Figure-Ground, Continuity, and Common Fate) to transform complex climate and agricultural data into a compelling, narrative-driven user experience.',
                 moreExplore: 'This project explores how data visualization can humanize abstract statistics—turning vanilla\'s 500-year journey into a lens for understanding climate vulnerability.',
                 morePortfolio: 'View My Portfolio',
-                morePlaceholder: '(Replace this link with your actual portfolio URL)',
+                morePlaceholder: '()',
             },
             fr: {
                 heroTitle: 'Ce que le changement climatique <br>peut nous enlever',
