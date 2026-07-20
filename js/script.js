@@ -1,13 +1,8 @@
-// ============================================================
-// 1. VUE APP SETUP
-// ============================================================
 const { createApp, ref, onMounted, nextTick } = Vue;
 
 const app = createApp({
     setup() {
-        // --- Language & Translations ---
         const currentLang = ref('en');
-
         const translations = {
             en: {
                 heroTitle: 'What Climate Change <br>Can Take From Us',
@@ -81,7 +76,6 @@ const app = createApp({
             }
         };
 
-        // --- Production Data for Interactivity ---
         const productionData = {
             all: [44, 29, 7, 10, 10],
             madagascar: [44, 0, 0, 0, 0],
@@ -89,12 +83,11 @@ const app = createApp({
             mexico: [0, 0, 7, 0, 0]
         };
 
-        // --- Acts: All Content (with Bilingual Support) ---
         const acts = ref([
-            // ACT I: Radar
+        
             {
-                title: '🌱 The Perfect Recipe',
-                titleFr: '🌱 La Recette Parfaite',
+                title: ' The Perfect Recipe',
+                titleFr: ' La Recette Parfaite',
                 text: `<em>Vanilla planifolia</em> is one of nature's most demanding crops. 
                        It needs <span class="highlight">27–29°C</span> days, 
                        <span class="highlight">70–80%</span> humidity, 
@@ -122,8 +115,8 @@ const app = createApp({
             },
             // ACT II: Heatmap
             {
-                title: '🗺️ The Vanilla Belt',
-                titleFr: '🗺️ La Ceinture de la Vanille',
+                title: ' The Vanilla Belt',
+                titleFr: ' La Ceinture de la Vanille',
                 text: `Currently, vanilla thrives in a narrow band <span class="highlight">20° north and south</span> of the equator. 
                        But look closely at the heatmap below. <strong>Red hotspots</strong> are ideal zones. 
                        Toggle the slider to see how these zones <strong>shift and shrink</strong> by 2050.`,
@@ -136,8 +129,8 @@ const app = createApp({
             },
             // ACT III: Bar Chart
             {
-                title: '🌍 Who Grows It?',
-                titleFr: '🌍 Qui le Cultive ?',
+                title: ' Who Grows It?',
+                titleFr: ' Qui le Cultive ?',
                 text: `Despite its global fame, <span class="highlight">80%</span> of the world's 
                        vanilla comes from a single region — the Sava district of Madagascar.`,
                 textFr: `Malgré sa renommée mondiale, <span class="highlight">80%</span> de la vanille mondiale 
@@ -156,8 +149,8 @@ const app = createApp({
             },
             // ACT IV: Line Chart
             {
-                title: '⛵ Voyage Across Oceans',
-                titleFr: '⛵ Voyage à Travers les Océans',
+                title: ' Voyage Across Oceans',
+                titleFr: ' Voyage à Travers les Océans',
                 text: `From Mexico (1520) to Europe, then to Réunion where 
                        <span class="highlight">12-year-old Edmond Albius</span> 
                        invented hand-pollination in 1841.`,
@@ -182,8 +175,8 @@ const app = createApp({
             },
             // ACT V: Dual-Axis
             {
-                title: '⚠️ The Fragile Future',
-                titleFr: '⚠️ L\'Avenir Fragile',
+                title: ' The Fragile Future',
+                titleFr: ' L\'Avenir Fragile',
                 text: `Madagascar is the <span class="highlight">4th most climate-vulnerable</span> 
                        country. By 2050, ideal zones in Mexico could shrink by 50%.`,
                 textFr: `Madagascar est le <span class="highlight">4ème pays le plus vulnérable au climat</span> 
@@ -200,8 +193,8 @@ const app = createApp({
             },
             // ACT VI: Forecast
             {
-                title: '🍨 The Last Scoop',
-                titleFr: '🍨 La Dernière Bouchée',
+                title: ' The Last Scoop',
+                titleFr: 'La Dernière Bouchée',
                 text: `The market hit <span class="highlight">$13.1 billion</span> in 2025. 
                        But this isn't abundance — it's scarcity driving prices up.`,
                 textFr: `Le marché a atteint <span class="highlight">13,1 milliards de dollars</span> en 2025. 
@@ -237,14 +230,14 @@ const app = createApp({
         // --- Switch Language (and update radar chart labels) ---
         function switchLanguage(lang) {
             currentLang.value = lang;
-            // Update radar chart labels if it exists
+           
             const radarChart = chartInstances.value[0];
             if (radarChart) {
                 const act = acts.value[0];
                 const labels = lang === 'fr' ? act.data.labelsFr : act.data.labels;
                 radarChart.data.labels = labels;
                 radarChart.update();
-                console.log(`🔄 Radar chart labels updated to ${lang}`);
+                console.log(` Radar chart labels updated to ${lang}`);
             }
         }
 
@@ -270,14 +263,14 @@ const app = createApp({
             iframe.style.borderRadius = '16px';
             iframe.style.background = '#ffffff';
             container.appendChild(iframe);
-            console.log('🗺️ Heatmap iframe embedded.');
+            console.log(' Heatmap iframe embedded.');
         }
 
-        // --- Lifecycle: onMounted ---
+      
         onMounted(() => {
             nextTick(() => {
                 setTimeout(() => {
-                    // Initialize all charts (skip index 1 = heatmap)
+                   
                     acts.value.forEach((act, index) => {
                         if (index === 1) return;
                         const canvas = document.getElementById(`chart-${index}`);
@@ -285,9 +278,9 @@ const app = createApp({
                             console.warn(`Canvas #chart-${index} not found — skipping`);
                             return;
                         }
-                        console.log(`✅ Initializing chart ${index} (${act.chartType})`);
+                        console.log(` Initializing chart ${index} (${act.chartType})`);
                         
-                        // If this is the radar chart, set labels based on current language
+                        
                         if (index === 0) {
                             act.data.labels = currentLang.value === 'fr' ? act.data.labelsFr : act.data.labels;
                         }
@@ -344,9 +337,6 @@ const app = createApp({
 
 app.mount('#app');
 
-// ============================================================
-// MODAL CONTROLS (outside Vue, for simplicity)
-// ============================================================
 (function() {
     const dataModal = document.getElementById('data-modal');
     const moreModal = document.getElementById('more-modal');
