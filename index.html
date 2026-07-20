@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
+
 <body>
 
     <!-- ============================================================ -->
@@ -31,28 +33,28 @@
                     <li><a href="#" id="more-link">{{ translations[currentLang].navMore }}</a></li>
                 </ul>
                 <div class="lang-switcher">
-                    <button @click="currentLang = 'en'"
-                            :style="{
-                                background: currentLang === 'en' ? '#5b3e1a' : 'transparent',
-                                color: currentLang === 'en' ? 'white' : '#5b3e1a',
-                                border: '1px solid #5b3e1a',
-                                borderRadius: '20px',
-                                padding: '4px 14px',
-                                cursor: 'pointer',
-                                fontWeight: '600',
-                                fontSize: '0.75rem'
-                            }">EN</button>
-                    <button @click="currentLang = 'fr'"
-                            :style="{
-                                background: currentLang === 'fr' ? '#5b3e1a' : 'transparent',
-                                color: currentLang === 'fr' ? 'white' : '#5b3e1a',
-                                border: '1px solid #5b3e1a',
-                                borderRadius: '20px',
-                                padding: '4px 14px',
-                                cursor: 'pointer',
-                                fontWeight: '600',
-                                fontSize: '0.75rem'
-                            }">FR</button>
+                    <button @click="switchLanguage('en')" :style="{
+                background: currentLang === 'en' ? '#5b3e1a' : 'transparent',
+                color: currentLang === 'en' ? 'white' : '#5b3e1a',
+                border: '1px solid #5b3e1a',
+                borderRadius: '20px',
+                padding: '4px 14px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                fontSize: '0.75rem',
+                transition: 'all 0.2s ease'
+            }">EN</button>
+                    <button @click="switchLanguage('fr')" :style="{
+                background: currentLang === 'fr' ? '#5b3e1a' : 'transparent',
+                color: currentLang === 'fr' ? 'white' : '#5b3e1a',
+                border: '1px solid #5b3e1a',
+                borderRadius: '20px',
+                padding: '4px 14px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                fontSize: '0.75rem',
+                transition: 'all 0.2s ease'
+            }">FR</button>
                 </div>
             </div>
         </nav>
@@ -90,9 +92,12 @@
         <!-- SCROLLYTELLING ACTS -->
         <div class="scroll-container">
             <section v-for="(act, index) in acts" :key="index" :id="'act-' + index" class="act">
+                <!-- Narrative Text -->
                 <div class="story-text">
-                    <h2 v-html="act.title"></h2>
-                    <p v-html="act.text"></p>
+                    <h2 v-if="currentLang === 'en'" v-html="act.title"></h2>
+                    <h2 v-else v-html="act.titleFr"></h2>
+                    <p v-if="currentLang === 'en'" v-html="act.text"></p>
+                    <p v-else v-html="act.textFr"></p>
                 </div>
 
                 <!-- Dropdown for Bar Chart (index 2) -->
@@ -100,9 +105,8 @@
                     <label for="region-select" style="font-weight:600;margin-right:12px;color:#4a3e2e;">
                         {{ translations[currentLang].filterRegion }}:
                     </label>
-                    <select id="region-select"
-                            @change="updateBarChart($event.target.value)"
-                            style="padding:8px 18px;border-radius:30px;border:1px solid #d4c3a8;background:#fdf8f0;font-size:0.9rem;cursor:pointer;outline:none;">
+                    <select id="region-select" @change="updateBarChart($event.target.value)"
+                        style="padding:8px 18px;border-radius:30px;border:1px solid #d4c3a8;background:#fdf8f0;font-size:0.9rem;cursor:pointer;outline:none;">
                         <option value="all">{{ translations[currentLang].allCountries }}</option>
                         <option value="madagascar">Madagascar</option>
                         <option value="indonesia">Indonesia</option>
@@ -151,7 +155,8 @@
                 <p>{{ translations[currentLang].moreGoal }}</p>
                 <p>{{ translations[currentLang].moreExplore }}</p>
                 <div style="margin-top:24px;padding-top:20px;border-top:1px solid #e0d3c0;text-align:center;">
-                    <a href="#" class="portfolio-link" target="_blank">🌐 {{ translations[currentLang].morePortfolio }}</a>
+                    <a href="#" class="portfolio-link" target="_blank">🌐 {{ translations[currentLang].morePortfolio
+                        }}</a>
                     <span style="display:block;margin-top:8px;font-size:0.8rem;color:#a0826a;">
                         {{ translations[currentLang].morePlaceholder }}
                     </span>
@@ -164,4 +169,5 @@
     <!-- External Script -->
     <script src="js/script.js?v=8"></script>
 </body>
+
 </html>

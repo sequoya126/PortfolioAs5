@@ -10,30 +10,24 @@ const app = createApp({
 
         const translations = {
             en: {
-                // Hero
                 heroTitle: 'What Climate Change <br>Can Take From Us',
                 heroSubtitle: 'The 500-year journey of vanilla—from sacred orchid to global obsession, and the climate crisis threatening its last breath.',
                 publishedDate: 'Published July 18, 2026',
                 readTime: '5 min read',
                 beginStory: 'Begin the story',
-                // Nav
                 navHome: 'Home',
                 navAbout: 'About',
                 navStory: 'The Story',
                 navData: 'Data',
                 navMore: 'More',
-                // Intro
                 introTitle: 'Why this story matters',
                 introText1: 'Vanilla is the world\'s second-most expensive spice. But behind its sweet aroma lies a fragile supply chain, reliant on <strong>one specific bee</strong>, <strong>one 12-year-old\'s hand-pollination method</strong>, and <strong>one climate-vulnerable island</strong>—Madagascar.',
                 introText2: 'This interactive documentary uses climate data, trade routes, and price forecasts to trace how rising temperatures are rewriting the fate of an entire agricultural heritage. <strong>What happens when a crop\'s "perfect recipe" no longer exists anywhere on Earth?</strong>',
                 scrollExplore: 'Scroll to explore',
-                // Interactivity
                 filterRegion: 'Filter by Region',
                 allCountries: 'All Countries',
-                // Footer
                 footerData: 'Data sourced from FAOSTAT, World Bank, and CHELSA Climate Projections.',
                 footerAssignment: 'Assignment for SEG3125 — Design & Interactive Media.',
-                // Data Modal
                 dataTitle: 'Data Sources',
                 dataIntro: 'All data used in this interactive story comes from the following publicly available sources:',
                 dataFaostat: 'Global vanilla production volumes by country (1961–present).',
@@ -43,7 +37,6 @@ const app = createApp({
                 dataDuke: 'Farmer surveys on climate impacts in Madagascar.',
                 dataArchives: 'Historical Archives — Colonial records and agricultural timelines (1520–present).',
                 dataNote: 'All datasets have been synthesized and normalized for narrative clarity.',
-                // More Modal
                 moreTitle: 'About This Project',
                 moreProject: 'The Last Bite is an interactive scrollytelling dashboard created as a design assignment for SEG3125 — Design and Interactive Media at the University of Ottawa.',
                 moreGoal: 'The goal was to apply Gestalt design principles (Proximity, Similarity, Figure-Ground, Continuity, and Common Fate) to transform complex climate and agricultural data into a compelling, narrative-driven user experience.',
@@ -89,7 +82,6 @@ const app = createApp({
         };
 
         // --- Production Data for Interactivity ---
-        const selectedRegion = ref('all');
         const productionData = {
             all: [44, 29, 7, 10, 10],
             madagascar: [44, 0, 0, 0, 0],
@@ -97,18 +89,25 @@ const app = createApp({
             mexico: [0, 0, 7, 0, 0]
         };
 
-        // --- Acts: All Content ---
+        // --- Acts: All Content (with Bilingual Support) ---
         const acts = ref([
             // ACT I: Radar
             {
                 title: '🌱 The Perfect Recipe',
+                titleFr: '🌱 La Recette Parfaite',
                 text: `<em>Vanilla planifolia</em> is one of nature's most demanding crops. 
                        It needs <span class="highlight">27–29°C</span> days, 
                        <span class="highlight">70–80%</span> humidity, 
                        and rich volcanic soil. Miss any mark, and it simply won't fruit.`,
+                textFr: `<em>Vanilla planifolia</em> est l'une des cultures les plus exigeantes de la nature. 
+                         Elle a besoin de journées à <span class="highlight">27–29°C</span>, 
+                         d'une humidité de <span class="highlight">70–80%</span> 
+                         et d'un sol volcanique riche. Si l'une de ces conditions n'est pas remplie, 
+                         elle ne donnera tout simplement pas de fruits.`,
                 chartType: 'radar',
                 data: {
                     labels: ['Temperature', 'Humidity', 'Altitude', 'Soil Organics', 'Shade'],
+                    labelsFr: ['Température', 'Humidité', 'Altitude', 'Matière organique', 'Ombre'],
                     datasets: [{
                         label: 'Ideal Vanilla Conditions',
                         data: [85, 80, 65, 90, 70],
@@ -121,21 +120,28 @@ const app = createApp({
                 },
                 options: { scales: { r: { min: 0, max: 100, ticks: { stepSize: 20 } } } }
             },
-            // ACT II: Heatmap (replaced by iframe)
+            // ACT II: Heatmap
             {
                 title: '🗺️ The Vanilla Belt',
+                titleFr: '🗺️ La Ceinture de la Vanille',
                 text: `Currently, vanilla thrives in a narrow band <span class="highlight">20° north and south</span> of the equator. 
                        But look closely at the heatmap below. <strong>Red hotspots</strong> are ideal zones. 
                        Toggle the slider to see how these zones <strong>shift and shrink</strong> by 2050.`,
+                textFr: `Actuellement, la vanille prospère dans une étroite bande <span class="highlight">à 20° nord et sud</span> de l'équateur. 
+                         Mais regardez attentivement la carte de chaleur ci-dessous. Les <strong>zones rouges</strong> sont les zones idéales. 
+                         Utilisez le curseur pour voir comment ces zones <strong>se déplacent et rétrécissent</strong> d'ici 2050.`,
                 chartType: 'heatmap',
                 data: null,
                 options: null
             },
-            // ACT III: Bar Chart (Production)
+            // ACT III: Bar Chart
             {
                 title: '🌍 Who Grows It?',
+                titleFr: '🌍 Qui le Cultive ?',
                 text: `Despite its global fame, <span class="highlight">80%</span> of the world's 
                        vanilla comes from a single region — the Sava district of Madagascar.`,
+                textFr: `Malgré sa renommée mondiale, <span class="highlight">80%</span> de la vanille mondiale 
+                         provient d'une seule région — le district de Sava à Madagascar.`,
                 chartType: 'bar',
                 data: {
                     labels: ['Madagascar', 'Indonesia', 'Mexico', 'Papua New Guinea', 'Others'],
@@ -148,12 +154,16 @@ const app = createApp({
                 },
                 options: { plugins: { legend: { display: false } } }
             },
-            // ACT IV: Line Chart (Trade Routes)
+            // ACT IV: Line Chart
             {
                 title: '⛵ Voyage Across Oceans',
+                titleFr: '⛵ Voyage à Travers les Océans',
                 text: `From Mexico (1520) to Europe, then to Réunion where 
                        <span class="highlight">12-year-old Edmond Albius</span> 
                        invented hand-pollination in 1841.`,
+                textFr: `Du Mexique (1520) à l'Europe, puis à La Réunion où 
+                         <span class="highlight">Edmond Albius, âgé de 12 ans</span> 
+                         a inventé la pollinisation manuelle en 1841.`,
                 chartType: 'line',
                 data: {
                     labels: ['1520', '1600', '1841', '1866', '1893', '2025'],
@@ -170,11 +180,14 @@ const app = createApp({
                 },
                 options: { plugins: { legend: { display: false } } }
             },
-            // ACT V: Dual-Axis (Production vs Price)
+            // ACT V: Dual-Axis
             {
                 title: '⚠️ The Fragile Future',
+                titleFr: '⚠️ L\'Avenir Fragile',
                 text: `Madagascar is the <span class="highlight">4th most climate-vulnerable</span> 
                        country. By 2050, ideal zones in Mexico could shrink by 50%.`,
+                textFr: `Madagascar est le <span class="highlight">4ème pays le plus vulnérable au climat</span> 
+                         au monde. D'ici 2050, les zones de culture idéales au Mexique pourraient diminuer de 50%.`,
                 chartType: 'bar',
                 data: {
                     labels: ['2015', '2018', '2021', '2024', '2027 (proj)'],
@@ -185,11 +198,14 @@ const app = createApp({
                 },
                 options: { plugins: { legend: { position: 'top' } } }
             },
-            // ACT VI: Forecast (Area with uncertainty)
+            // ACT VI: Forecast
             {
                 title: '🍨 The Last Scoop',
+                titleFr: '🍨 La Dernière Bouchée',
                 text: `The market hit <span class="highlight">$13.1 billion</span> in 2025. 
                        But this isn't abundance — it's scarcity driving prices up.`,
+                textFr: `Le marché a atteint <span class="highlight">13,1 milliards de dollars</span> en 2025. 
+                         Mais ce n'est pas l'abondance — c'est la rareté qui fait monter les prix.`,
                 chartType: 'line',
                 data: {
                     labels: ['2024', '2026', '2028', '2030', '2032', '2034', '2036'],
@@ -209,17 +225,36 @@ const app = createApp({
 
         // --- Interactivity: Update Bar Chart ---
         function updateBarChart(region) {
-            if (!window.barChart) return;
+            if (!window.barChart) {
+                console.warn('Bar chart not initialized yet');
+                return;
+            }
             const data = productionData[region] || productionData.all;
             window.barChart.data.datasets[0].data = data;
             window.barChart.update();
         }
 
+        // --- Switch Language (and update radar chart labels) ---
+        function switchLanguage(lang) {
+            currentLang.value = lang;
+            // Update radar chart labels if it exists
+            const radarChart = chartInstances.value[0];
+            if (radarChart) {
+                const act = acts.value[0];
+                const labels = lang === 'fr' ? act.data.labelsFr : act.data.labels;
+                radarChart.data.labels = labels;
+                radarChart.update();
+                console.log(`🔄 Radar chart labels updated to ${lang}`);
+            }
+        }
+
         // --- Heatmap Render (using iframe) ---
         function renderHeatmap() {
             const container = document.getElementById('chart-wrapper-1');
-            if (!container) return;
-            // Clear and set up for iframe
+            if (!container) {
+                console.error('Heatmap container not found');
+                return;
+            }
             container.innerHTML = '';
             container.style.opacity = '1';
             container.style.transform = 'translateY(0)';
@@ -241,48 +276,58 @@ const app = createApp({
         // --- Lifecycle: onMounted ---
         onMounted(() => {
             nextTick(() => {
-                // Initialize all charts (skip index 1 = heatmap)
-                acts.value.forEach((act, index) => {
-                    if (index === 1) return;
-                    const canvas = document.getElementById(`chart-${index}`);
-                    if (!canvas) {
-                        console.warn(`Canvas #chart-${index} not found`);
-                        return;
-                    }
-                    const ctx = canvas.getContext('2d');
-                    const chart = new Chart(ctx, {
-                        type: act.chartType,
-                        data: act.data,
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: true } },
-                            ...act.options
+                setTimeout(() => {
+                    // Initialize all charts (skip index 1 = heatmap)
+                    acts.value.forEach((act, index) => {
+                        if (index === 1) return;
+                        const canvas = document.getElementById(`chart-${index}`);
+                        if (!canvas) {
+                            console.warn(`Canvas #chart-${index} not found — skipping`);
+                            return;
                         }
-                    });
-                    chartInstances.value.push(chart);
-                    // Store bar chart reference for interactivity
-                    if (index === 2) {
-                        window.barChart = chart;
-                    }
-                });
-
-                // Lazy-load heatmap when scrolled into view
-                const wrappers = document.querySelectorAll('.chart-wrapper');
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            if (entry.target.id === 'chart-wrapper-1' && !mapRendered) {
-                                mapRendered = true;
-                                renderHeatmap();
+                        console.log(`✅ Initializing chart ${index} (${act.chartType})`);
+                        
+                        // If this is the radar chart, set labels based on current language
+                        if (index === 0) {
+                            act.data.labels = currentLang.value === 'fr' ? act.data.labelsFr : act.data.labels;
+                        }
+                        
+                        const ctx = canvas.getContext('2d');
+                        const chart = new Chart(ctx, {
+                            type: act.chartType,
+                            data: act.data,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: { legend: { display: true } },
+                                ...act.options
                             }
+                        });
+                        chartInstances.value.push(chart);
+                        // Store bar chart reference for interactivity
+                        if (index === 2) {
+                            window.barChart = chart;
+                            console.log('📊 Bar chart stored for interactivity');
                         }
                     });
-                }, { threshold: 0.25 });
-                wrappers.forEach(w => observer.observe(w));
 
-                console.log('🍦 Vue Scrollytelling with Interactivity & Bilingual support ready!');
+                    // Lazy-load heatmap when scrolled into view
+                    const wrappers = document.querySelectorAll('.chart-wrapper');
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                if (entry.target.id === 'chart-wrapper-1' && !mapRendered) {
+                                    mapRendered = true;
+                                    renderHeatmap();
+                                }
+                            }
+                        });
+                    }, { threshold: 0.25 });
+                    wrappers.forEach(w => observer.observe(w));
+
+                    console.log(`🍦 Vue Scrollytelling ready! (${chartInstances.value.length} charts initialized)`);
+                }, 100);
             });
         });
 
@@ -292,7 +337,7 @@ const app = createApp({
             currentLang,
             translations,
             updateBarChart,
-            selectedRegion
+            switchLanguage
         };
     }
 });
