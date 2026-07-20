@@ -453,6 +453,23 @@ body {
     }
 }
 
+.logo-icon {
+    height: 22px;           /* Small, balanced size */
+    width: auto;
+    vertical-align: middle;
+    margin-right: 8px;
+    display: inline-block;
+    /* Optional: slight transparency/softening for a polished look */
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+}
+
+/* Optional: hover effect for the logo */
+.logo:hover .logo-icon {
+    opacity: 1;
+}
+
+
 /* ----- HeatMap CSS ----- */
 
 /* Ensure the map container fills the chart wrapper */
