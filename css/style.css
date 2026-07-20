@@ -454,14 +454,14 @@ body {
 }
 
 .logo-icon {
-    height: 22px;           /* Small, balanced size */
-    width: auto;
-    vertical-align: middle;
-    margin-right: 8px;
     display: inline-block;
-    /* Optional: slight transparency/softening for a polished look */
-    opacity: 0.85;
-    transition: opacity 0.2s ease;
+    width: 28px;
+    height: 28px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+    transform: scale(0.6);  /* Shrinks to 60% of its container */
 }
 
 /* Optional: hover effect for the logo */
